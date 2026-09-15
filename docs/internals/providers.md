@@ -30,6 +30,15 @@ its user-global skill directories under that profile, so the profile links those
 back to the user's real `~/.gemini`; MCP servers, hooks, and rules there stay out of the profile.
 See [profile isolation](../../apps/server/src/provider/antigravityAuthSupport.ts).
 
+Puku CLI is structurally a Claude Code CLI driver: same `stream-json` wire format, same resume /
+permission / tool-calling semantics, same Anthropic backend by default. The two CLI deltas are
+`--permission-mode auto` (Claude's enum does not include `auto`) and `--bare`, which the driver
+forwards from the per-instance `bareMode` setting. Per-instance isolation reuses the Claude
+pattern of forwarding a custom home directory through `--settings` (with `PUKU_CLI_HOME` set in
+the environment) rather than relocating `HOME`, which would move the macOS keychain entry along
+with it. See [Puku CLI driver](../../apps/server/src/provider/Drivers/PukuCliDriver.ts) and
+[Puku CLI adapter](../../apps/server/src/provider/Layers/PukuCliAdapter.ts).
+
 The [Antigravity installer](../../apps/server/src/provider/AntigravityInstallation.ts) outlives
 client connections and provider-instance rebuilds. Releases are immutable, with an atomic pointer
 selecting the version for new processes. Running processes hold leases on their version. Updates

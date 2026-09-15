@@ -668,6 +668,72 @@ export const ClaudeSettings = makeProviderSettingsSchema(
 );
 export type ClaudeSettings = typeof ClaudeSettings.Type;
 
+/**
+ * Puku CLI settings.
+ *
+ * Structurally a clone of `ClaudeSettings` (puku-cli mirrors Claude Code's
+ * flag surface and NDJSON wire format). Adds a `bareMode` toggle that
+ * forwards to puku-cli's `--bare` flag (skips hooks, LSP, plugin sync,
+ * attribution, auto-memory, background prefetches, keychain reads, and
+ * CLAUDE.md auto-discovery — useful for sandboxed server runs).
+ *
+ * @module settings/PukuCliSettings
+ */
+export const PukuCliSettings = makeProviderSettingsSchema(
+  {
+    enabled: Schema.Boolean.pipe(
+      Schema.withDecodingDefault(Effect.succeed(true)),
+      Schema.annotateKey({ providerSettingsForm: { hidden: true } }),
+    ),
+    binaryPath: makeBinaryPathSetting("puku-cli").pipe(
+      Schema.annotateKey({
+        title: "Binary path",
+        description: "Path to the Puku CLI binary used by this instance.",
+        providerSettingsForm: { placeholder: "puku-cli", clearWhenEmpty: "omit" },
+      }),
+    ),
+    homePath: TrimmedString.pipe(
+      Schema.withDecodingDefault(Effect.succeed("")),
+      Schema.annotateKey({
+        title: "Puku config dir",
+        description:
+          "Custom Puku home and config directory. Keeps ~/.puku-cli/ settings isolated per instance.",
+        providerSettingsForm: {
+          placeholder: "~/.puku-cli",
+          clearWhenEmpty: "omit",
+        },
+      }),
+    ),
+    customModels: Schema.Array(CustomModelSetting).pipe(
+      Schema.withDecodingDefault(Effect.succeed([])),
+      Schema.annotateKey({ providerSettingsForm: { hidden: true } }),
+    ),
+    launchArgs: Schema.String.pipe(
+      Schema.withDecodingDefault(Effect.succeed("")),
+      Schema.annotateKey({
+        title: "Launch arguments",
+        description: "Additional CLI arguments passed on session start.",
+        providerSettingsForm: {
+          placeholder: "e.g. --add-dir ~/scratch",
+          clearWhenEmpty: "omit",
+        },
+      }),
+    ),
+    bareMode: Schema.Boolean.pipe(
+      Schema.withDecodingDefault(Effect.succeed(false)),
+      Schema.annotateKey({
+        title: "Bare mode",
+        description:
+          "Forward --bare to Puku CLI: skip hooks, LSP, plugin sync, attribution, auto-memory, and CLAUDE.md auto-discovery. Recommended for server-side runs.",
+      }),
+    ),
+  },
+  {
+    order: ["binaryPath", "homePath", "launchArgs", "bareMode"],
+  },
+);
+export type PukuCliSettings = typeof PukuCliSettings.Type;
+
 export const CursorSettings = makeProviderSettingsSchema(
   {
     // Off by default like Grok and OpenCode. Users opt in from Settings.

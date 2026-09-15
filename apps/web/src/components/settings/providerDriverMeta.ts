@@ -6,6 +6,7 @@ import {
   GrokSettings,
   OpenCodeSettings,
   ProviderDriverKind,
+  PukuCliSettings,
 } from "@t3tools/contracts";
 import type * as Schema from "effect/Schema";
 import {
@@ -16,6 +17,7 @@ import {
   type Icon,
   OpenAI,
   OpenCodeIcon,
+  PukuCliIcon,
 } from "../Icons";
 
 type ProviderSettingsSchema = {
@@ -81,6 +83,13 @@ const PROVIDER_CLIENT_DEFINITIONS: readonly ProviderClientDefinition[] = [
     label: "Antigravity",
     icon: AntigravityIcon,
     settingsSchema: AntigravitySettings,
+  },
+  {
+    value: ProviderDriverKind.make("pukuAgent"),
+    label: "Puku CLI",
+    icon: PukuCliIcon,
+    badgeLabel: "Preview",
+    settingsSchema: PukuCliSettings,
   },
 ];
 

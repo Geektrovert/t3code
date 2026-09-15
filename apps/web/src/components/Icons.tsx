@@ -781,3 +781,38 @@ export const ForgejoIcon: Icon = (props) => (
     </g>
   </svg>
 );
+
+// Puku CLI brand mark: rounded terminal window with traffic-light dots and a
+// stylized ">_" prompt. The shape is intentionally generic so it stays legible
+// at icon sizes without relying on a non-redistributable raster.
+export const PukuCliIcon: Icon = ({ className, ...props }) => (
+  <svg
+    {...props}
+    viewBox="0 0 24 24"
+    fill="none"
+    className={cn("fill-[#1F2937] dark:fill-[#E5E7EB]", className)}
+  >
+    <rect x="2.5" y="3.5" width="19" height="17" rx="3" fill="currentColor" />
+    <rect
+      x="2.5"
+      y="3.5"
+      width="19"
+      height="17"
+      rx="3"
+      stroke="currentColor"
+      strokeWidth="1"
+    />
+    <circle cx="6" cy="7.25" r="0.85" fill="#EF4444" />
+    <circle cx="9" cy="7.25" r="0.85" fill="#F59E0B" />
+    <circle cx="12" cy="7.25" r="0.85" fill="#10B981" />
+    <path
+      d="M6.5 13.2 L9 15 L6.5 16.8"
+      stroke="#10B981"
+      strokeWidth="1.4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      fill="none"
+    />
+    <rect x="10.5" y="14.4" width="6" height="1.2" rx="0.6" fill="#10B981" />
+  </svg>
+);
